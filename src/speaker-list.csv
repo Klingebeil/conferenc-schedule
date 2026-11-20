@@ -1,0 +1,4 @@
+Name,Nachname,Title,Jobtitel,Arbeitgeber,Image-path
+Ada,Lovelace,Dr.,Systems Designer,Analytical Engines Lab,assets/speaker-images/ada.svg
+Grace,Hopper,Rear Adm.,Computer Scientist,Compiler Works,assets/speaker-images/grace.svg
+Linus,Torvalds,,Open Source Maintainer,Kernel Collective,assets/speaker-images/linus.svg

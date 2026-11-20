@@ -1,0 +1,12 @@
+Date,Starttime,Endtime,Type,Titel,Untertitel,Beschreibung,Raum,Speaker
+2027-05-12,09:00,09:30,Talk,Designing for the Unexpected,Resilient systems in practice,Patterns for services that remain useful during change,Main Hall,Ada Lovelace
+2027-05-12,09:30,10:00,Talk,Building Trustworthy Data Pipelines,,A practical approach to quality and lineage,Main Hall,Grace Hopper
+2027-05-12,10:00,10:30,Pause,Coffee and conversation,,,Main Hall,
+2027-05-12,10:30,11:30,Workshop,Mapping a Better User Journey,Small-group exercise,Bring one difficult customer journey to redesign,Workshop Studio,Ada Lovelace|Grace Hopper
+2027-05-12,10:30,11:30,Workshop,Prototyping a Data Story,Hands-on session,Turn a small dataset into a clear visual narrative,Maker Lab,Linus Torvalds
+2027-05-12,11:45,12:15,Talk,When Interfaces Tell Stories,,A short case study in information design,Workshop Studio,Linus Torvalds
+2027-05-13,09:00,09:30,Talk,The Quiet Power of Defaults,,How small choices shape large systems,Main Hall,Grace Hopper
+2027-05-13,09:30,10:30,Workshop,Prototyping with Constraints,Hands-on lab,,Workshop Studio,Linus Torvalds
+2027-05-13,10:30,11:00,Pause,Mid-morning break,,,Main Hall,
+2027-05-13,11:00,11:30,Talk,Open Systems and Shared Knowledge,,Designing for community contribution,Main Hall,Ada Lovelace
+2027-05-13,11:30,12:00,Talk,From Prototype to Product,,,Workshop Studio,Unknown Speaker
