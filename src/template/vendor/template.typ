@@ -1,14 +1,22 @@
 #let conference-name = "Conference Name"
 
+#let template = (
+  show-times: true,
+  show-room: true,
+  show-speakers: true,
+  show-subtitles: true,
+  show-description: true,
+  show-speaker-images: true,
+)
+
 #let colors = (
   ink: rgb("#182333"),
   muted: rgb("#526174"),
   paper: rgb("#FFFFFF"),
-  line: rgb("#D9E1EA"),
-  accent: rgb("#175C78"),
-  talk: rgb("#EAF3F7"),
-  workshop: rgb("#F0F1FA"),
-  pause: rgb("#F5F2E9"),
+  accent: rgb("#000000"),
+  talk: rgb("#ffffff"),
+  workshop: rgb("#ffffff"),
+  pause: rgb("#ffffff"),
 )
 
 #let page-style = (
@@ -18,7 +26,7 @@
 )
 
 #let speaker-style = (
-  image-size: 3.2em,
+  image-size: 2.5em,
   image-column: 3.4em,
   column-gutter: 0.6em,
   row-gutter: 0.25em,
@@ -30,23 +38,21 @@
   accent-width: 3pt,
   time-column: 5.4em,
   column-gutter: 0.8em,
-  time-spacing: 0.2em,
-  start-size: 0.92em,
-  end-size: 0.82em,
+  time-spacing: 0.5em,
   type-size: 0.76em,
-  title-size: 1.15em,
-  subtitle-size: 0.95em,
-  description-size: 0.88em,
+  title-size: 1.5em,
+  subtitle-size: 0.8em,
+  description-size: 0.8em,
+  text-size: 1em,
   room-size: 0.8em,
-  title-spacing: 0.15em,
-  description-spacing: 0.3em,
-  detail-spacing: 0.35em,
+  title-spacing: 0.2em,
+  description-spacing: 0.2em,
+  detail-spacing: 0.2em,
 )
 
 #let schedule-style = (
   column-gutter: 0.8em,
-  row-gutter: 0.65em,
-  row-spacing: 0.65em,
+  row-spacing: 0em,
   heading-size: 2em,
   date-size: 1.25em,
   heading-spacing: 0.8em,
@@ -80,18 +86,28 @@
   let size = speaker-style.image-size
   if speaker.image-path != "" {
     image("../../" + speaker.image-path, width: size, height: size, fit: "cover")
-  } else {
-    box(width: size, height: size, fill: colors.line)[]
   }
 }
 
-#let speaker-line(speakers) = {
+#let speaker-line(speakers, template: template) = {
   for (index, speaker) in speakers.enumerate() [
+    #let columns = if template.show-speaker-images {
+      (speaker-style.image-column, 1fr)
+    } else {
+      (1fr,)
+    }
+    #let gutter = if template.show-speaker-images {
+      speaker-style.column-gutter
+    } else {
+      0em
+    }
     #grid(
-      columns: (speaker-style.image-column, 1fr),
-      column-gutter: speaker-style.column-gutter,
+      columns: columns,
+      column-gutter: gutter,
       row-gutter: speaker-style.row-gutter,
-      speaker-portrait(speaker),
+      if template.show-speaker-images [
+        #place(top+left, speaker-portrait(speaker))
+      ],
       [
         #strong(speaker.full-name)
         #if speaker.title != "" [ · #speaker.title]
@@ -105,82 +121,86 @@
   ]
 }
 
-#let event-card(event, tint) = {
+#let event-card(event, tint, template: template) = {
   block(
     width: 100%,
     fill: tint,
     inset: card-style.inset,
-    stroke: (left: card-style.accent-width + colors.accent),
   )[
+    #let columns = if template.show-times {
+      (card-style.time-column, 1fr)
+    } else {
+      (1fr,)
+    }
+    #let gutter = if template.show-times {
+      card-style.column-gutter
+    } else {
+      0em
+    }
     #grid(
-      columns: (card-style.time-column, 1fr),
-      column-gutter: card-style.column-gutter,
-      [
+      columns: columns,
+      column-gutter: gutter,
+      if template.show-times [
         #stack(
           spacing: card-style.time-spacing,
-          text(size: card-style.start-size, weight: "bold")[#event.starttime],
-          text(size: card-style.end-size, fill: colors.muted)[to #event.endtime],
+          text(size: card-style.text-size, weight: "bold")[#event.starttime],
+          text(size: card-style.text-size, fill: colors.muted)[#event.endtime],
         )
       ],
       [
         #text(size: card-style.type-size, weight: "bold", fill: colors.accent)[#upper(event.type)]
         #v(card-style.title-spacing)
         #text(size: card-style.title-size, weight: "bold")[#event.title]
-        #if event.subtitle != "" [
+        #if template.show-subtitles and event.subtitle != "" [
           #linebreak()
           #text(size: card-style.subtitle-size, fill: colors.muted)[#event.subtitle]
         ]
-        #if event.description != "" [
+        #if template.show-description and event.description != "" [
           #v(card-style.description-spacing)
           #text(size: card-style.description-size)[#event.description]
         ]
-        #v(card-style.detail-spacing)
-        #text(size: card-style.room-size, weight: "bold", fill: colors.muted)[#event.room]
-        #v(card-style.detail-spacing)
-        #speaker-line(event.speakers)
+        #if template.show-room [
+          #v(card-style.detail-spacing)
+          #text(size: card-style.subtitle-size, weight: "bold", fill: colors.muted)[#event.room]
+        ]
+        #if template.show-speakers [
+          #v(card-style.detail-spacing)
+          #speaker-line(event.speakers, template: template)
+        ]
       ],
     )
   ]
 }
 
-#let talk-block(event) = event-card(event, colors.talk)
-#let workshop-block(event) = event-card(event, colors.workshop)
-#let pause-block(event) = event-card(event, colors.pause)
+#let talk-block(event, template: template) = event-card(event, colors.talk, template: template)
+#let workshop-block(event, template: template) = event-card(event, colors.workshop, template: template)
+#let pause-block(event, template: template) = event-card(event, colors.pause, template: template)
 
-#let schedule-event(event) = {
+#let schedule-event(event, template: template) = {
   if event.type == "Workshop" {
-    workshop-block(event)
+    workshop-block(event, template: template)
   } else if event.type == "Pause" {
-    pause-block(event)
+    pause-block(event, template: template)
   } else {
-    talk-block(event)
+    talk-block(event, template: template)
   }
 }
 
-#let schedule-row(events) = [
+#let schedule-row(events, template: template) = [
   #if events.len() == 1 [
-    #schedule-event(events.first())
+    #schedule-event(events.first(), template: template)
   ] else if events.len() > 1 [
     #grid(
       columns: events.len(),
       column-gutter: schedule-style.column-gutter,
-      row-gutter: schedule-style.row-gutter,
-      ..events.map(schedule-event),
+      row-gutter: 0.5em,
+      ..events.map(event => schedule-event(event, template: template)),
     )
   ]
   #if events.len() > 0 [#v(schedule-style.row-spacing)]
 ]
 
-#let day-heading(date, subtitle) = [
-  #text(size: schedule-style.heading-size, weight: "bold", fill: colors.ink)[#conference-name]
-  #linebreak()
-  #text(size: schedule-style.date-size, fill: colors.accent)[#date]
-  #if subtitle != "" [ · #subtitle]
-  #v(schedule-style.heading-spacing)
-]
-
-#let schedule-page(date, subtitle, first: false, body) = [
+#let schedule-page(date, first: false, body) = [
   #if not first [#pagebreak()]
-  #day-heading(date, subtitle)
   #body
 ]

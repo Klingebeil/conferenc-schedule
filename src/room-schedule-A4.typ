@@ -1,7 +1,21 @@
 #import "template/vendor/template.typ": a4-program, schedule-page, schedule-row
 #import "template/vendor/schedule-data.typ": load-schedule
 
-#let schedule = load-schedule()
+#let conference-schedule = csv("conference-schedule.csv") // Path the conference schedule CSV file
+#let speaker-list = csv("speaker-list.csv") // Path to the speaker list CSV file
+#let conference-name = "Conference Name"
+
+#let template = (
+  show-times: true,
+  show-room: false,
+  show-speakers: true,
+  show-subtitles: true,
+  show-description: true,
+  show-speaker-images: true,
+)
+
+#let schedule = load-schedule(conference-schedule, speaker-list)
+#let dates = schedule.dates
 
 #let room-pages(schedule) = {
   schedule.dates.map(date => {
@@ -14,12 +28,16 @@
 #show: a4-program
 
 #for (page-index, page-info) in room-pages(schedule).enumerate() [
+  #if page-index > 0 [
+    #pagebreak()
+  ]
+  = #page-info.room #(page-info.date)
+  #v(2em, weak: true)
   #let page-events = schedule.events.filter(
     event => event.date == page-info.date and event.room == page-info.room,
   )
-  #schedule-page(page-info.date, page-info.room, first: page-index == 0)[
-    #for event in page-events [
-      #schedule-row((event,))
-    ]
+  #for event in page-events [
+    #line(length: 100%, stroke: 0.5pt)
+    #schedule-row((event,), template: template)
   ]
 ]

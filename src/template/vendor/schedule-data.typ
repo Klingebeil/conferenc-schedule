@@ -11,29 +11,29 @@
   let date = datetime(year: year, month: month, day: day)
 }
 
-#let load-schedule() = {
-  let schedule-rows = csv("../../conference-schedule.csv")
-  let speaker-rows = csv("../../speaker-list.csv")
+#let load-schedule(schedule-csv, speaker-csv) = {
+  let schedule-rows =schedule-csv
+  let speaker-rows = speaker-csv
 
   assert(
     schedule-rows.len() > 1,
-    message: "conference-schedule.csv must contain a header and at least one event.",
+    message: "Conference Schedule must contain a header and at least one event.",
   )
   assert(
     schedule-rows.first().join(",") == expected-schedule-header,
-    message: "conference-schedule.csv has unexpected columns or column order.",
+    message: "Conference Schedule has unexpected columns or column order.",
   )
   assert(
     speaker-rows.len() > 0 and speaker-rows.first().join(",") == expected-speaker-header,
-    message: "speaker-list.csv has unexpected columns or column order.",
+    message: "Speaker List has unexpected columns or column order.",
   )
   assert(
     schedule-rows.slice(1).all(row => row.len() == 9),
-    message: "Every conference-schedule.csv row must contain exactly 9 fields.",
+    message: "Every Conference Schedule row must contain exactly 9 fields (" + expected-schedule-header + ").",
   )
   assert(
     speaker-rows.slice(1).all(row => row.len() == 6),
-    message: "Every speaker-list.csv row must contain exactly 6 fields.",
+    message: "Every Speaker List row must contain exactly 6 fields (" + expected-speaker-header + ").",
   )
 
   let speakers = speaker-rows.slice(1).map(row => (
