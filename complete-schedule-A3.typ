@@ -1,5 +1,5 @@
-#import "template/vendor/template.typ": a3-program, schedule-page, schedule-row
-#import "template/vendor/schedule-data.typ": load-schedule
+#import "vendor/template.typ": a3-program, schedule-page, schedule-row
+#import "vendor/schedule-data.typ": load-schedule
 
 #let conference-schedule = csv("conference-schedule.csv") // Path the conference schedule CSV file
 #let speaker-list = csv("speaker-list.csv") // Path to the speaker list CSV file

@@ -87,7 +87,7 @@
   let size = speaker-style.image-size
   if speaker.image-path != "" {
     box(width: size, height: size, clip:true, radius: speaker-style.image-radius)[
-      #image("../../" + speaker.image-path, width: size, height: size, fit: "cover")
+      #image("../speaker-images/" + speaker.image-path.split("/").last(), width: size, height: size, fit: "cover")
     ]
   }
 }
