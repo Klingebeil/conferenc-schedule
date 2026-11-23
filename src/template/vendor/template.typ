@@ -27,7 +27,8 @@
 
 #let speaker-style = (
   image-size: 2.5em,
-  image-column: 3.4em,
+  image-radius: 100%,
+  image-column: 3em,
   column-gutter: 0.6em,
   row-gutter: 0.25em,
   spacing: 0.35em,
@@ -85,7 +86,9 @@
 #let speaker-portrait(speaker) = {
   let size = speaker-style.image-size
   if speaker.image-path != "" {
-    image("../../" + speaker.image-path, width: size, height: size, fit: "cover")
+    box(width: size, height: size, clip:true, radius: speaker-style.image-radius)[
+      #image("../../" + speaker.image-path, width: size, height: size, fit: "cover")
+    ]
   }
 }
 
