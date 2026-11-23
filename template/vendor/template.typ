@@ -20,8 +20,8 @@
 )
 
 #let page-style = (
-  a3: (margin: (x: 1.4cm, y: 1.25cm), text-size: 10pt, leading: 0.65em),
-  a4: (margin: (x: 1.5cm, y: 1.4cm), text-size: 11pt, leading: 0.7em),
+  a3: (text-size: 10pt, leading: 0.65em),
+  a4: (text-size: 11pt, leading: 0.7em),
   font: "Helvetica Neue",
 )
 
@@ -59,18 +59,6 @@
   heading-spacing: 0.8em,
 )
 
-#let a3-program(body) = {
-  set page(
-    paper: "a3",
-    flipped: false,
-    margin: page-style.a3.margin,
-    fill: colors.paper,
-  )
-  set text(font: page-style.font, size: page-style.a3.text-size, fill: colors.ink)
-  set par(leading: page-style.a3.leading)
-  body
-}
-
 #let a4-program(body) = {
   set page(
     paper: "a4",
@@ -87,7 +75,7 @@
   let size = speaker-style.image-size
   if speaker.image-path != "" {
     box(width: size, height: size, clip:true, radius: speaker-style.image-radius)[
-      #image("../speaker-images/" + speaker.image-path.split("/").last(), width: size, height: size, fit: "cover")
+      #image("../../speaker-images/" + speaker.image-path.split("/").last(), width: size, height: size, fit: "cover")
     ]
   }
 }

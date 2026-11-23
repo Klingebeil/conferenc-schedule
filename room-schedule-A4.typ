@@ -1,5 +1,5 @@
-#import "vendor/template.typ": a4-program, schedule-page, schedule-row
-#import "vendor/schedule-data.typ": load-schedule
+#import "template/vendor/template.typ": a4-program, schedule-page, schedule-row, colors, page-style
+#import "template/vendor/schedule-data.typ": load-schedule
 
 #let conference-schedule = csv("conference-schedule.csv") // Path the conference schedule CSV file
 #let speaker-list = csv("speaker-list.csv") // Path to the speaker list CSV file
@@ -25,7 +25,15 @@
   }).flatten()
 }
 
-#show: a4-program
+#set page(
+  paper: "a4",
+  flipped: false,
+  margin: (x: 1.5cm, y: 1.25cm),
+  fill: colors.paper,
+)
+  
+#set text(font: page-style.font, size: page-style.a4.text-size, fill: colors.ink)
+#set par(leading: page-style.a4.leading)
 
 #for (page-index, page-info) in room-pages(schedule).enumerate() [
   #if page-index > 0 [
@@ -37,7 +45,9 @@
     event => event.date == page-info.date and event.room == page-info.room,
   )
   #for event in page-events [
-    #line(length: 100%, stroke: 0.5pt)
-    #schedule-row((event,), template: template)
+    #if not event.type == "Pause" [
+      #line(length: 100%, stroke: 0.5pt)
+      #schedule-row((event,), template: template)
+    ]
   ]
 ]

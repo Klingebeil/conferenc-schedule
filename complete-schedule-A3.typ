@@ -1,5 +1,5 @@
-#import "vendor/template.typ": a3-program, schedule-page, schedule-row
-#import "vendor/schedule-data.typ": load-schedule
+#import "template/vendor/template.typ": schedule-page, schedule-row, colors, page-style
+#import "template/vendor/schedule-data.typ": load-schedule
 
 #let conference-schedule = csv("conference-schedule.csv") // Path the conference schedule CSV file
 #let speaker-list = csv("speaker-list.csv") // Path to the speaker list CSV file
@@ -22,7 +22,15 @@
   starttimes.map(starttime => events.filter(event => event.starttime == starttime))
 }
 
-#show: a3-program
+#set page(
+  paper: "a3",
+  flipped: false,
+  margin: (x: 1.5cm, y: 1.25cm),
+  fill: colors.paper,
+)
+
+#set text(font: page-style.font, size: page-style.a3.text-size, fill: colors.ink)
+#set par(leading: page-style.a3.leading)
 
 #for (day-index, date) in dates.enumerate() [
   #let day-events = schedule.events.filter(event => event.date == date)
