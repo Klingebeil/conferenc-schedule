@@ -10,19 +10,13 @@
 )
 
 #let colors = (
-  ink: rgb("#182333"),
+  ink: cmyk(47%, 81%, 72%, 69%),
   muted: rgb("#526174"),
   paper: rgb("#FFFFFF"),
   accent: rgb("#000000"),
   talk: rgb("#ffffff"),
   workshop: rgb("#ffffff"),
   pause: rgb("#ffffff"),
-)
-
-#let page-style = (
-  a3: (text-size: 10pt, leading: 0.65em),
-  a4: (text-size: 11pt, leading: 0.7em),
-  font: "Helvetica Neue",
 )
 
 #let speaker-style = (

@@ -64,8 +64,8 @@
       message: "Invalid Starttime or Endtime; use 24-hour HH:MM.",
     )
     assert(
-      event-type in ("Talk", "Workshop", "Pause"),
-      message: "Type must be Talk, Workshop, or Pause.",
+      event-type != "",
+      message: "Type must not be empty.",
     )
     assert(title != "" and room != "", message: "Every event needs a Titel and Raum.")
 
@@ -115,4 +115,9 @@
     dates: events.map(event => event.date).dedup(),
     rooms: events.map(event => event.room).sorted().dedup(),
   )
+}
+
+#let get-day-tag(date, dates) = {
+  let day-index = dates.position(d => d == date)
+  "Tag " + str(day-index + 1)
 }
